@@ -15,6 +15,23 @@ const getHotelsData = async (req, res) => {
     }
 }
 
+const getHotelById = async (req, res) => {
+    try {
+        const hotelId = req.params.id
+        const docRef = db.collection('Hotels').doc(hotelId)
+        const doc = await docRef.get()
+
+        if (!doc.exists) {
+            return res.status(404).send('Hotel não econtrado')
+        }
+
+        res.status(200).json({ id: doc.id, ...doc.data() })
+
+    } catch (error) {
+        res.status(500).send(error.message)
+    }
+}
+
 const deleteHotelDataBase = async (req, res) => {
     const hotelId = req.params.id // Obtenho o id do hotel para ser deletado da URL
     try {
@@ -56,8 +73,31 @@ const postHotelDataBase = async (req, res) => {
     }
 }
 
+const patchHotelDataBase = async (req, res) => {
+    try {
+        const hotelId = req.params.id
+
+        const modification = req.body
+
+        const docRef = db.collection('Hotels').doc(hotelId)
+        const doc = await docRef.get()
+
+        if (!doc.exists) {
+            return res.status(404).send('Hotel não encontrado')
+        }
+
+        await docRef.update(modification)
+        
+        res.status(200).send(`Hotel com ID ${hotelId} atualizado com sucesso`)
+    } catch (error) {
+        res.status(500).send(`Hotel edita com sucessor com ID ${hotelId}`)
+    }
+}
+
 module.exports = {
     getHotelsData,
+    getHotelById,
     deleteHotelDataBase,
-    postHotelDataBase
+    postHotelDataBase,
+    patchHotelDataBase
 }
