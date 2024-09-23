@@ -1,4 +1,4 @@
-const db = require('./firebase')
+const { db } = require('./firebase')
 
 // Essa função pega o ultimo ID registrado no banco, se não tiver, inicializa com id 0
 const getLastDataId = async (entityType) => {

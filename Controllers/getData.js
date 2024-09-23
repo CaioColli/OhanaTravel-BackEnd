@@ -1,4 +1,4 @@
-const db = require('../Services/firebase')
+const { db } = require('../Services/firebase')
 
 const getData = (collectionName) => {
     return async (req, res) => {

@@ -1,4 +1,8 @@
-const db = require('../Services/firebase')
+const {
+    bucket,
+    db
+} = require('../Services/firebase')
+
 const {
     getLastDataId,
     incrementDataId
@@ -9,17 +13,29 @@ const postData = (collectionName) => {
         try {
             const data = req.body
 
-            // Mapeia os arquivos para obter o caminho de cada uma imagem
-            const images = req.files.map(file => file.path) // path = caminho
+            // Mapeia os arquivos para upload e obter as URLs
+            const uploadPromises = req.files.map(async (file) => {
+                const fileName = Date.now() + '_' + file.originalname // Gera um nome único
+                const fileUpload = bucket.file(fileName)
 
-            data.images = images
+                await fileUpload.save(file.buffer, {
+                    metadata: {
+                        contentType: file.mimetype,
+                    },
+                })
+
+                return `https://storage.googleapis.com/${bucket.name}/${fileName}` // URL do arquivo
+            })
+
+            const imageUrls = await Promise.all(uploadPromises)
+            data.images = imageUrls // Armazena as URLs das imagens
 
             // Recupera o último ID e incrementa + 1
             const lastId = await getLastDataId(collectionName)
-            const newId = lastId + 1
-
+            const newId = Number(lastId) + 1
+            
             // Define o novo valor com o ID incrementado
-            await db.collection(collectionName).doc(newId.toString()).set(data) // Converti o ID para string ao ser adicionado
+            await db.collection(collectionName).doc(newId.toString()).set(data)
 
             await incrementDataId(newId, collectionName)
 
