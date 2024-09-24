@@ -1,6 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const hotelRoutes = require('./Routes/hotelRoutes')
+const userRoutes = require('./Routes/userRoutes')
 
 const app = express()
 app.use(express.json())
@@ -10,6 +11,8 @@ const door = 8000
 app.use(cors({origin:'*'}))
 
 app.use('/hoteis', hotelRoutes)
+
+app.use('/', userRoutes)
 
 app.listen(door, () => {
     console.log(`Executando a porta ${door}`)
