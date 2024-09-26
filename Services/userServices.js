@@ -1,15 +1,18 @@
 const { admin, db} = require('./firebase')
 
-const createUser = async (email, password, isAdmin = false) => {
+const createUser = async (email, firstName, lastName, password, isAdmin = false) => {
     try {
         const userRecord = await admin.auth().createUser({
             email,
             password,
         })
 
-        await db.collection('Users').doc(userRecord.uid).set({
+        await db.collection('Usuários').doc(userRecord.uid).set({
             email,
-            isAdmin,
+            firstName,
+            lastName,
+            password,
+            isAdmin
         })
 
         return userRecord

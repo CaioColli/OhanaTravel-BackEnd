@@ -6,6 +6,7 @@ const currencyRoutes = require('./Routes/currencyRoutes')
 
 const app = express()
 app.use(express.json())
+
 const door = 8000
 
 // Por enquanto qualquer lugar pode fazer requisição
