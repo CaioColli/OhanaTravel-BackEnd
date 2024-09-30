@@ -27,7 +27,8 @@ Este projeto é uma API CRUD desenvolvida para gerenciar hospedagens, guias tur�
 - **Node.js**: Para o desenvolvimento do servidor.
 - **Express.js**: Framework para construir APIs.
 - **Firebase**: Para armazenar dados e gerenciar autenticação.
-- **Firestore**: Banco de dados NoSQL para armazenar informações sobre hospedagens, guias, veículos, etc.
+- **Firabase Firestone**: Banco de dados NoSQL para armazenar informações sobre hospedagens, guias, veículos, etc.
 - **Firebase Storage**: Para armazenar imagens e outros arquivos.
+- **Firebase Authentication**: Para gerenciamento de autenticação de usuários.
 
 ## Estrutura da API
