@@ -1,6 +1,7 @@
 const { validationResult } = require('express-validator')
 const createUser = require('../Services/userServices')
 const { default: axios } = require('axios')
+const { db } = require('../Services/firebase')
 require('dotenv').config()
 
 const registerUser = async (req, res) => {
@@ -32,17 +33,27 @@ const loginUser = async (req, res) => {
 
         const { idToken, refreshToken, expiresIn, localId } = response.data
 
+        // Busca o nome do usuário no Firestore
+        const userDoc = await db.collection('Usuários').doc(localId).get()
+        if (!userDoc.exists) {
+            return res.status(404).json({ message: 'Usuário não encontrado' })
+        }
+        const firstName = userDoc.data().firstName
+
         return res.status(200).json({
             message: 'Login bem-sucedido',
             idToken,
             refreshToken,
             expiresIn,
-            uid: localId
+            uid: localId,
+            firstName // Inclui o firstName na resposta
         })
     } catch (error) {
+        console.error("Erro ao fazer login:", error.response ? error.response.data : error.message) // Para debugar
         return res.status(400).json({ message: 'Email ou senha inválida' })
     }
 }
+
 
 module.exports = {
     registerUser,

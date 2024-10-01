@@ -11,7 +11,7 @@ const createUser = async (email, firstName, lastName, password, isAdmin = false)
             email,
             firstName,
             lastName,
-            password,
+            //password,
             isAdmin
         })
 
