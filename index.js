@@ -18,6 +18,11 @@ app.use('/', userRoutes)
 
 app.use('/currency', currencyRoutes)
 
-app.listen(door, () => {
-    console.log(`Executando a porta ${door}`)
+// Middleware para tratamento de erros
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Algo deu errado!');
 })
+
+// Exportar o app Express para o Vercel
+module.exports = app;
