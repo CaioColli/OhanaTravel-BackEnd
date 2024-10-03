@@ -39,6 +39,7 @@ const loginUser = async (req, res) => {
             return res.status(404).json({ message: 'Usuário não encontrado' })
         }
         const firstName = userDoc.data().firstName
+        const isAdmin = userDoc.data().isAdmin
 
         return res.status(200).json({
             message: 'Login bem-sucedido',
@@ -46,7 +47,8 @@ const loginUser = async (req, res) => {
             refreshToken,
             expiresIn,
             uid: localId,
-            firstName // Inclui o firstName na resposta
+            firstName,
+            isAdmin
         })
     } catch (error) {
         console.error("Erro ao fazer login:", error.response ? error.response.data : error.message) // Para debugar
